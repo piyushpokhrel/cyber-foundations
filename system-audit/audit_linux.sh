@@ -55,3 +55,14 @@ else
   echo "[!] /etc/ssh/sshd_config not found (ssh server may not be installed)"
 fi
 echo
+echo "===== AUTH / LOGIN LOGS (best effort) ====="
+if [ -f /var/log/auth.log ]; then
+  echo "[+] /var/log/auth.log exists. Recent failed logins:"
+  grep -i "failed password" /var/log/auth.log | tail -n 20 || true
+elif [ -f /var/log/secure ]; then
+  echo "[+] /var/log/secure exists. Recent failed logins:"
+  grep -i "failed password" /var/log/secure | tail -n 20 || true
+else
+  echo "[!] No auth log found (/var/log/auth.log or /var/log/secure). This is common in WSL."
+fi
+echo
